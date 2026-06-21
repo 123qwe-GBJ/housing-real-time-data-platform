@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 对应Mapper接口全路径 -->
+<mapper namespace="com.zyg.mapper.JobInfoMapper">
+
+    <!-- 1. 查询房屋价值TOP10 -->
+    <select id="getHouseTop10Data" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            id AS ranking,
+            original_id AS regionId,
+            med_house_val AS houseValue,
+            med_inc AS medianIncome,
+            house_age AS avgHouseAge
+        FROM
+            top10_house_value_analysis
+        ORDER BY
+            ranking;
+    </select>
+
+    <!-- 2. 查询房屋价值数据 -->
+    <select id="getHouseValueData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            high_value AS highValue,
+            mid_value AS midValue,
+            low_value AS lowValue
+        FROM house_value_zones;
+    </select>
+
+    <!-- 3. 查询房价负担数据 -->
+    <select id="getBurdenData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            affordability_level AS level,
+            region_count AS count
+        FROM
+            housing_affordability_distribution
+        ORDER BY
+            level_order;
+    </select>
+
+    <!-- 4. 查询房屋年龄分布数据 -->
+    <select id="getHouseAgeData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            age_level AS ageLevel,
+            region_count AS regionCount,
+            level_order AS levelOrder
+        FROM
+            house_age_distribution
+        ORDER BY
+            level_order;
+    </select>
+
+    <!-- 5. 查询市场评分数据 -->
+    <select id="getMarketScoreData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+        indicator_name AS indicatorName,
+        score_value AS score,
+        actual_value AS actualValue,
+        description AS "desc",
+        indicator_order AS indicatorOrder
+        FROM
+        exact_market_scoreboard
+        WHERE
+        indicator_order <![CDATA[<]]> 4
+        ORDER BY
+        indicator_order;
+    </select>
+
+    <!-- 6. 海拔与房价关系 -->
+    <select id="getLatitudePriceData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            latitude_zone AS latitudeZone,
+            avg_house_value AS avgHouseValue,
+            avg_income AS avgIncome
+        FROM
+            latitude_price_analysis
+        ORDER BY
+            max_latitude DESC;
+    </select>
+    <!-- 7. 各纬度带房屋特征对比分析 -->
+    <select id="getLatitudeFeatureData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            latitude_group AS latitudeGroup,
+            avg_house_age AS avgHouseAge,
+            avg_rooms AS avgRooms,
+            avg_occupancy AS avgOccupancy
+        FROM
+            latitude_zone_comparison
+        ORDER BY
+            max_latitude DESC;
+    </select>
+    <!-- 8. 房龄-价值衰减曲线 -->
+    <select id="getAgeValueData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            age_range AS ageRange,
+            avg_house_value AS avgHouseValue,
+            avg_income AS avgIncome,
+            avg_rooms AS avgRooms
+        FROM
+            simplified_age_value_analysis
+        ORDER BY
+            min_age ASC;
+    </select>
+    <!-- 9. 每户平均房间数与房价关系趋势 -->
+    <select id="getRoomPriceData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            room_size AS roomSize,
+            avg_house_price AS avgHousePrice,
+            avg_income AS avgIncome,
+            region_count AS regionCount
+        FROM
+            rooms_price_relationship
+        ORDER BY
+            min_rooms ASC;
+    </select>
+    <!-- 10. 加州各县房价 -->
+    <select id="getCountyIncomeData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            county AS englishName,
+            avg_median_income AS price
+        FROM
+            county_avg_income
+        ORDER BY
+            avg_median_income DESC;
+    </select>
+    <!-- 11. 区域人口规模分级 -->
+    <select id="getPopulationSizeData" resultType="com.zyg.pojo.JobInfo">
+         <![CDATA[
+        SELECT
+            CASE
+                WHEN population >= 10000 THEN '大型'
+                WHEN population >= 5000 AND population < 10000 THEN '中型'
+                WHEN population >= 1000 AND population < 5000 THEN '小型'
+                ELSE '微型'
+                END AS populationSize,
+            COUNT(*) AS regionCount
+        FROM
+            ods_housing_info
+        GROUP BY
+            populationSize
+        ORDER BY
+            CASE populationSize
+                WHEN '大型' THEN 1
+                WHEN '中型' THEN 2
+                WHEN '小型' THEN 3
+                WHEN '微型' THEN 4
+                END ASC;
+        ]]>
+    </select>
+    <!-- 12. 高价值投资推荐区域 -->
+    <select id="getInvestRecommendData" resultType="com.zyg.pojo.JobInfo">
+        SELECT
+            区域ID AS regionId,
+            当前房屋价值 AS currentHouseValue,
+            居民收入 AS residentIncome,
+            房屋年龄 AS houseAge,
+            投资评分 AS investmentScore,
+            地理区域 AS geographicArea
+        FROM
+            housing_invest_recommend;
+    </select>
+
+</mapper>
