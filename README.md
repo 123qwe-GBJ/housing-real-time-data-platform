@@ -43,39 +43,54 @@ MySQL指标库 → SpringBoot后端接口 → ECharts可视化大屏。
 
 ```text
 housing-real-time-data-platform
-housing-real-time-data-platform
-├── data-generator/                  # Java增量数据生产者
+├── data-generator/                  # Java增量数据生产者（模拟房产数据流）
 │   └── HousingDataProducer.java
 ├── dataset/                         # 原始数据集 & Python清洗后数据集
 │   └── california_housing_prices_cleaned.csv
-├── docs/                            
+├── docs/                            # 流程图、运行截图、设计文档
 ├── spark-streaming-job/             # Spark Streaming流式处理任务（Scala）
 │   ├── HousingStreamToMySQL.scala
 │   └── MySQLUtil.scala
-├── springboot-api/                  # SpringBoot后端接口服务
-│   └── src/main/java/com/zyg
-│       ├── controller/              # 接口控制器
-│       │   ├── LoginController.java
-│       │   └── PageController.java
-│       ├── mapper/                  # 数据库映射层
-│       │   └── JobInfoMapper.java
-│       ├── pojo/                    # 实体类
-│       │   └── JobInfo.java
-│       ├── service/                 # 业务接口层
-│       │   ├── JobInfoService.java
-│       │   └── impl/
-│       │       └── JobInfoServiceImpl.java
-│       ├── jdbc/                    # JDBC工具
-│       │   └── DbUtil.java
-│       ├── util/                    # 通用工具类
-│       │   ├── JdbcUtil.java
-│       │   └── SqlSessionFactoryUtils.java
-│       └── AppStart.java            # SpringBoot启动类
-├── sql/                             # Hive&MySQL建表、分层初始化SQL
+├── springboot-api/                  # SpringBoot后端接口 + 可视化服务
+│   └── src/main
+│       ├── java/com/zyg
+│       │   ├── controller/
+│       │   │   ├── LoginController.java
+│       │   │   └── PageController.java
+│       │   ├── mapper/
+│       │   │   └── JobInfoMapper.java
+│       │   ├── pojo/
+│       │   │   └── JobInfo.java
+│       │   ├── service/
+│       │   │   ├── JobInfoService.java
+│       │   │   └── impl
+│       │   │       └── JobInfoServiceImpl.java
+│       │   ├── jdbc/
+│       │   │   └── DbUtil.java
+│       │   ├── util/
+│       │   │   ├── JdbcUtil.java
+│       │   │   └── SqlSessionFactoryUtils.java
+│       │   └── AppStart.java
+│       └── resources
+│           ├── mapper/
+│           │   └── JobInfoMapper.xml
+│           ├── static/
+│           │   ├── css/
+│           │   ├── images/
+│           │   ├── js/
+│           │   └── json/
+│           ├── templates/
+│           │   ├── index.html
+│           │   └── login.html
+│           ├── application.yml
+│           └── mybatis-config.xml
+├── sql/                             # Hive ODS、DWS、MySQL初始化脚本
 │   ├── 01_ods_hive.sql
 │   ├── 02_dws_mysql.sql
 │   └── 03_base_mysql.sql
 └── README.md
+
+
 
 ```
 
