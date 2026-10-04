@@ -40,32 +40,43 @@ MySQL指标库 → SpringBoot后端接口 → ECharts可视化大屏。
 
 
 ## 项目目录结构
-## 项目目录结构
 
 ```text
+housing-real-time-data-platform
 housing-real-time-data-platform
 ├── data-generator/                  # Java增量数据生产者
 │   └── HousingDataProducer.java
 ├── dataset/                         # 原始数据集 & Python清洗后数据集
 │   └── california_housing_prices_cleaned.csv
-├── docs/                            # 流程图、运行截图等文档资源
+├── docs/                            
 ├── spark-streaming-job/             # Spark Streaming流式处理任务（Scala）
 │   ├── HousingStreamToMySQL.scala
 │   └── MySQLUtil.scala
 ├── springboot-api/                  # SpringBoot后端接口服务
 │   └── src/main/java/com/zyg
-│       ├── controller/
-│       ├── mapper/
-│       ├── pojo/
-│       ├── service/
-│       ├── jdbc/
-│       ├── util/
-│       └── AppStart.java
+│       ├── controller/              # 接口控制器
+│       │   ├── LoginController.java
+│       │   └── PageController.java
+│       ├── mapper/                  # 数据库映射层
+│       │   └── JobInfoMapper.java
+│       ├── pojo/                    # 实体类
+│       │   └── JobInfo.java
+│       ├── service/                 # 业务接口层
+│       │   ├── JobInfoService.java
+│       │   └── impl/
+│       │       └── JobInfoServiceImpl.java
+│       ├── jdbc/                    # JDBC工具
+│       │   └── DbUtil.java
+│       ├── util/                    # 通用工具类
+│       │   ├── JdbcUtil.java
+│       │   └── SqlSessionFactoryUtils.java
+│       └── AppStart.java            # SpringBoot启动类
 ├── sql/                             # Hive&MySQL建表、分层初始化SQL
 │   ├── 01_ods_hive.sql
 │   ├── 02_dws_mysql.sql
 │   └── 03_base_mysql.sql
 └── README.md
+
 ```
 
 ## 模块说明
